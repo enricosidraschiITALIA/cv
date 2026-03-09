@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrico Sidraschi | Graphic Designer</title>
+    <style>
+        /* Reset e Stili Base con Myriad Pro */
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
+        body { 
+            font-family: "Myriad Pro", "Myriad", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+            line-height: 1.6; 
+            color: #333; 
+            background-color: #fff; 
+            overflow-x: hidden; 
+        }
+        
+        /* Navigazione */
+        nav { 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            background: rgba(255,255,255,0.98); 
+            z-index: 1000; 
+            border-bottom: 1px solid #000; 
+            backdrop-filter: blur(5px); 
+        }
+        nav ul { display: flex; justify-content: center; list-style: none; padding: 0.8rem; flex-wrap: wrap; }
+        nav ul li { margin: 0 15px; }
+        nav ul li a { 
+            text-decoration: none; 
+            color: #000; 
+            font-weight: bold; 
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            transition: 0.3s; 
+            letter-spacing: 1.5px; 
+        }
+        nav ul li a:hover { color: #888; }
+
+        /* Sezioni */
+        section { padding: 50px 10%; min-height: auto; display: flex; flex-direction: column; justify-content: center; }
+        #home { padding-top: 100px; padding-bottom: 50px; }
+        .white { background-color: #ffffff; color: #000; }
+        .black { background-color: #000000; color: #fff; }
+        
+        /* Tipografia */
+        .job-title { letter-spacing: 8px; text-transform: uppercase; font-size: 1.2rem; margin-bottom: 8px; font-weight: 600; color: #444; }
+        h1 { font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1.1; text-transform: uppercase; margin-bottom: 5px; font-weight: 700; white-space: nowrap; }
+        h2 { font-size: 1.4rem; text-transform: uppercase; border-bottom: 2px solid; display: inline-block; padding-bottom: 5px; margin-bottom: 25px; letter-spacing: 4px; font-weight: 700; }
+        h3 { font-size: 1.1rem; text-transform: uppercase; margin-top: 10px; margin-bottom: 5px; letter-spacing: 1.5px; font-weight: 700; }
+        .date-label { opacity: 0.6; font-size: 0.9rem; font-weight: bold; margin-bottom: 10px; display: block; }
+
+        .content { max-width: 1100px; margin: 0 auto; width: 100%; }
+        
+        /* Layout Bio */
+        .bio-wrapper { display: flex; gap: 40px; margin-top: 20px; align-items: flex-start; }
+        .profile-img { 
+            width: 280px; 
+            height: 280px; 
+            object-fit: cover; 
+            flex-shrink: 0; 
+            border: none; 
+            background-color: transparent; 
+        }
+        .bio-text { flex-grow: 1; font-size: 1.05rem; line-height: 1.6; }
+        .bio-text p { margin-bottom: 15px; }
+
+        /* Griglie ed Esperienze */
+        .experience-item { margin-bottom: 35px; border-left: 1px solid #444; padding-left: 20px; }
+        .black .experience-item { border-left-color: #fff; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+        /* Nuova Gallery Grid */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-top: 20px; }
+        .gallery-item { aspect-ratio: 16 / 9; background: #222; border: 1px solid #333; overflow: hidden; position: relative; cursor: pointer; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.6s ease-in-out; }
+        .gallery-item:hover img { filter: grayscale(0%); transform: scale(1.05); }
+
+        /* Lightbox Modal */
+        .modal {
+            display: none; position: fixed; z-index: 2000; top: 0; left: 0;
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.95);
+            justify-content: center; align-items: center; flex-direction: column;
+        }
+        .modal-content { max-width: 85%; max-height: 80%; border: 1px solid #555; object-fit: contain; }
+        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); color: #fff; font-size: 50px; cursor: pointer; padding: 20px; user-select: none; z-index: 2100; transition: 0.3s; }
+        .nav-arrow:hover { color: #888; }
+        .prev { left: 2%; } .next { right: 2%; }
+        #caption { color: #fff; margin-top: 15px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
+        .close-btn { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; cursor: pointer; z-index: 2100; }
+
+        /* Footer */
+        footer { padding: 40px; text-align: center; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; border-top: 1px solid #000; }
+        a { color: inherit; transition: 0.3s; text-decoration: none; }
+        .contact-link:hover { opacity: 0.5; }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .bio-wrapper { flex-direction: column; align-items: center; text-align: center; }
+            .profile-img { width: 220px; height: 220px; }
+            h1 { white-space: normal; }
+            .nav-arrow { font-size: 30px; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#studi">Studi</a></li>
+            <li><a href="#lavorative">ESPERIENZE LAVORATIVE</a></li>
+            <li><a href="#personali">ESPERIENZE PERSONALI</a></li>
+            <li><a href="#gallery">GALLERY</a></li>
+            <li><a href="#contact">CONTATTI</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="white">
+        <div class="content">
+            <p class="job-title">Graphic Designer</p>
+            <h1>Enrico Sidraschi</h1>
+            <div class="bio-wrapper">
+                <img src="immagini/20770420_10203827541644967_1288868913569069192_n.jpg" class="profile-img" alt="Enrico Sidraschi">
+                <div class="bio-text">
+                    <p>Lavoro nell’ambito della grafica e della comunicazione da più di 20 anni. Sono una persona socievole e predisposta al lavoro in team ma capace di portare a termine progetti in autonomia.</p>
+                    <p>In tutti questi anni ho avuto la possibilità e la fortuna di cimentarmi in svariati progetti aumentando il mio bagaglio tecnico e la mia capacità di organizzare e gestire un team, partendo da piccoli progetti e passando ad una gestione a 360° di un team di più persone su più progetti.</p>
+                    <p>Attualmente sono assunto con contratto indeterminato in una agenzia di comunicazione in provincia di Varese.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="black">
+        <div class="content">
+            <h2>SKILLS</h2>
+            <div class="grid">
+                <div>
+                    <h3>Software</h3>
+                    <p>Adobe inDesign - Adobe Illustrator - Adobe Photoshop </p>
+                    <p>&nbsp;</p>
+                    <p>Adobe Lightroom - Adobe Acrobat - Adobe Premier - Adobe After Effects </p>
+                    <p>&nbsp;</p>
+                    <p>Dreamweaver - Adobe Express - WordPress - Joomla - Pacchetto office</p>
+                    <p>&nbsp;</p>
+                    <p>SketchUP - Rinhoceros - Keyshot </p>
+                </div>
+                <div>
+                    <h3>SISTEMI OPERATIVI</h3>
+                    <p>Windows - Mac OS</p>
+                    <h3 style="margin-top: 30px;">PROGRAMMI AI</h3>
+                    <p><strong>LLM & Prompt Engineering:</strong> Gemini, Google AI Studio, ChatGPT, Grok, LMArena.</p>
+                    <p><strong>Video & Image Generation:</strong> Vidu AI, Digen AI, Whisk AI.</p>
+                    <p><strong>Audio & Voice Synthesis:</strong> Suno AI, ElevenLabs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="studi" class="white">
+        <div class="content">
+            <h2>STUDI</h2>
+            <div class="grid">
+                <div>
+                    <h3>Formazione Continua ...</h3>
+                    <p><strong>1995</strong> - Diplomato al Liceo Artistico di Varese.</p>
+                    <p><strong>1997</strong> - Diploma di Tecnico di Prestampa presso l’ENAIP di Varese</p>
+                    <p><strong>2001</strong> - Diploma di Creatore di siti web presso l’ENAIP di Varese</p>
+                    <p><strong>2010</strong> - Corso base di fotografia 2010</p>
+                    <p><strong>2020</strong> - Vari videocorsi a seconda delle esigenze lavorative</p>
+                    <p>&nbsp;</p>
+                    <p><strong>Inglese</strong> - Livello base - Attualmente sto seguendo un corso on line per migliorare la mia comprensione</p>
+                </div>
+                <div>
+                    <h3>&nbsp;</h3>
+                    <p><strong>2020</strong> - Videocorso AMAZON FBA (Fulfillment by Amazon)</p>
+                    <p><strong>2023</strong> - Videocorso AMAZON KDP (Kindle Direct Publishing)</p>
+                    <p><strong>2025</strong> - Videocorso WORDPRESS base + Videocorso di Affiliate Marketing Amazon</p>
+                    <p><strong>2025</strong> - Videocorso YOUTUBE Cash Cow Channel</p>
+                    <p><strong>2025/2026</strong> - Videocorsi AI (Artificial Intelligence)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="lavorative" class="black">
+        <div class="content">
+            <h2>ESPERIENZE LAVORATIVE</h2>
+            
+            <div class="experience-item">
+                <span class="date-label">1997</span>
+                <p>Stage presso La Tipografia di Varese come fotocompositore. Impiego presso le Pagine Utili Mondadori a Milano come grafico addetto alla creazione e alla correzione degli spazi pubblicitari. Impiego presso “Le Cronache” di Varese come addetto all’impaginazione del quotidiano ed alla scansione di immagini.</p>
+            </div>
+
+            <div class="experience-item">
+                <span class="date-label">1998</span>
+                <p>Impiego presso le “Grafiche Quirici” di Barasso (VA) come grafico addetto alla progettazione e gestione fino all’uscita in stampa; ovvero creazione di impaginati a computer partendo da layout stabiliti, ritocco di immagini, modifiche e montaggi fotografici, uscita in pellicola.</p>
+            </div>
+
+            <div class="experience-item">
+                <span class="date-label">2002 — OGGI</span>
+                <p>Da febbraio 2002 sono impiegato come grafico presso un’agenzia di Comunicazione a Varese. Le mie mansioni vanno dalla progettazione e realizzazione di cataloghi, listini, pagine pubblicitarie, brochure, volantini, pack ecc... allo scatto fotografico e alla calibrazione e fotoritocco delle immagini, progettazione di siti web, progettazione di stand per fiere utilizzando programmi 3D, creazione di brevi presentazioni video con l’utilizzo di filmati ed immagini, progettazione e realizzazione di brevi spot pubblicitari per maxiscreen.</p>
+            </div>
+
+            <div class="experience-item">
+                <span class="date-label">2009 — IN CORSO</span>
+                <p>Tramite la mia ditta sono impiegato presso l’ufficio di grafica interna di una multinazionale. In questo periodo mi sono occupato di alcuni brand del gruppo spaziando dalla realizzazione di cataloghi, pack, volantini, banner, poster, illustrazioni per ifu, realizzazione di disegni tecnici ecc...</p>
+            </div>
+
+            <div class="experience-item">
+                <span class="date-label">2015 — IN CORSO</span>
+                <p>Sempre tramite la mia ditta, ho iniziato un progetto per la realizzazione della gamma prodotto in 3D per gli usi più svariati... 3D per i cucinieri, rendering da utilizzare nei cataloghi come foto prodotto oppure immagini ambientate. Progetto tutt'ora in corso.</p>
+            </div>
+
+            <div class="experience-item">
+                <span class="date-label">2016 — IN CORSO</span>
+                <p>Sempre tramite la mia ditta, ho iniziato un progetto per la realizzazione della gamma prodotto in 3D per gli usi più svariati... 3D per i cucinieri, rendering da utilizzare nei cataloghi come foto prodotto oppure immagini ambientate. Progetto tutt'ora in corso.</p>
+            </div>
+
+            <div class="experience-item">
+                <span class="date-label">2020 — IN CORSO</span>
+                <p>sempre tramite la mia ditta, lavoro prevalentemente in smartworking rimanendo in costante contatto con il team e con i clienti tramite videocall, e-mail e chat procedendo con i vari progetti in corso.</p>
+            </div>
+
+            <div class="experience-item">
+                <span class="date-label">2023-24 — IN CORSO</span>
+                <p>Sempre tramite la mia ditta, mi sono occupato prevalentemente di un progetto di fotoritocco di tutta la gamma prodotti, con vari brand, per un nostro importante cliente. Inizialmente ho gestito e prodotto io tutto il materiale. In un secondo momento mi sono occupato sempre della realizzazione del materiale ma gestendo un team di più persone a seconda delle esigenze del momento.</p>
+            </div>
+
+            <div class="experience-item">
+                <span class="date-label">2025 — IN CORSO</span>
+                <p>Sempre tramite la mia ditta, mi sono occupato prevalentemente della realizzazione di prodotti 3D di tutta la gamma prodotti, con vari brand, per un nostro importante cliente. Con la realizzazione di rendering base da caricare sul sito e da salvataggi particolare da condividere con dei partner.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="personali" class="white">
+        <div class="content">
+            <h2>ESPERIENZE PERSONALI</h2>
+            
+            <div class="experience-item">
+                <span class="date-label">2020</span>
+                <h3>Amazon FBA</h3>
+                <p>Iscrizione al Seller Central AMZ, ricerca nicchia di mercato, brandizzazione del prodotto, ricerca fornitore e gestione quotidiana delle vendite.</p>
+            </div>
+
+            <div class="experience-item">
+                <span class="date-label">2023</span>
+                <h3>Amazon KDP</h3>
+                <p>Ricerca mercati profittevoli e creazione di libretti utilizzando ChatGPT per i contenuti e la suite Adobe per la realizzazione grafica e tecnica.</p>
+            </div>
+
+            <div class="experience-item">
+                <span class="date-label">2025</span>
+                <h3>Digital Marketing & YouTube</h3>
+                <p>Costruzione di un sito web (WordPress) finalizzato all Affiliate Marketing e apertura canali YouTube "Cash Cow Channel" per la monetizzazione dei contenuti.</p>
+            </div>
+
+            <div class="experience-item">
+                <span class="date-label">2026</span>
+                <h3>AI Specialist</h3>
+                <p>Studio e applicazione di strumenti di Intelligenza Artificiale generativa per ottimizzare il flusso di lavoro creativo e la produzione di video, immagini, creazione landing page e piccoli siti creando e modificando direttamente il codice HTML.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="black">
+        <div class="content">
+            <h2>GALLERY</h2>
+            <div id="gallery-grid" class="gallery-grid">
+                </div>
+        </div>
+    </section>
+
+    <section id="contact" class="white">
+        <div class="content" style="text-align: center;">
+            <h2>CONTATTI</h2>
+<div style="font-size: 1.1rem; line-height: 2; letter-spacing: 1px;">
+      <p><a href="mailto:enrico.sidraschi@gmail.com" class="contact-link">enrico.sidraschi@gmail.com</a></p>
+                <p>+39 333 3012598</p>
+                <p>Varese, Italia</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="myModal" class="modal">
+        <span class="close-btn">&times;</span>
+        <span class="nav-arrow prev" id="prevBtn">&#10094;</span>
+        <img class="modal-content" id="img-expanded">
+        <span class="nav-arrow next" id="nextBtn">&#10095;</span>
+        <div id="caption"></div>
+    </div>
+
+    <footer>
+        <p>© 2026 Enrico Sidraschi — Graphic Designer</p>
+    </footer>
+
+    <script>
+        const totalImages = 20; 
+        let currentIndex = 1;
+        
+        const galleryGrid = document.getElementById('gallery-grid');
+        const modal = document.getElementById('myModal');
+        const modalImg = document.getElementById('img-expanded');
+        const captionText = document.getElementById('caption');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const closeBtn = document.querySelector('.close-btn');
+
+        // Funzione per aggiornare il Lightbox
+        function updateModal(index) {
+            currentIndex = index;
+            const num = currentIndex.toString().padStart(2, '0');
+            modalImg.src = `immagini/grafica${num}.jpg`; 
+            captionText.innerHTML = `Lavoro ${currentIndex} di ${totalImages}`;
+        }
+
+        // Generazione 20 elementi Gallery
+        for (let i = 1; i <= totalImages; i++) {
+            const num = i.toString().padStart(2, '0');
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            
+            const img = document.createElement('img');
+            img.src = `immagini/grafica${num}.jpg`;
+            img.alt = `Progetto ${num}`;
+            img.loading = "lazy";
+            
+            item.onclick = () => {
+                modal.style.display = "flex";
+                updateModal(i);
+            };
+
+            item.appendChild(img);
+            galleryGrid.appendChild(item);
+        }
+
+        // Navigazione
+        prevBtn.onclick = (e) => {
+            e.stopPropagation();
+            let idx = currentIndex - 1 < 1 ? totalImages : currentIndex - 1;
+            updateModal(idx);
+        };
+
+        nextBtn.onclick = (e) => {
+            e.stopPropagation();
+            let idx = currentIndex + 1 > totalImages ? 1 : currentIndex + 1;
+            updateModal(idx);
+        };
+
+        modal.onclick = () => modal.style.display = "none";
+        closeBtn.onclick = () => modal.style.display = "none";
+
+        // Tasti tastiera
+        document.onkeydown = (e) => {
+            if (modal.style.display === "flex") {
+                if (e.key === "ArrowLeft") prevBtn.onclick(e);
+                if (e.key === "ArrowRight") nextBtn.onclick(e);
+                if (e.key === "Escape") modal.style.display = "none";
+            }
+        };
+    </script>
+</body>
+</html>
